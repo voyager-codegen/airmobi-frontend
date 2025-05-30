@@ -8,6 +8,8 @@ import { Message } from "./screens/Message/Message";
 import { SignIn } from "./screens/Auth/SignIn";
 import { SignUp } from "./screens/Auth/SignUp";
 import { ForgotPassword } from "./screens/Auth/ForgotPassword";
+import { EmailVerification } from "./screens/Auth/EmailVerification";
+import { ResetPassword } from "./screens/Auth/ResetPassword";
 
 createRoot(document.getElementById("app") as HTMLElement).render(
   <StrictMode>
@@ -20,6 +22,8 @@ createRoot(document.getElementById("app") as HTMLElement).render(
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/email-verification" element={<EmailVerification />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>
   </StrictMode>

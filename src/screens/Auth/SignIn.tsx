@@ -1,14 +1,40 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 
+interface LocationState {
+  notification?: {
+    type: 'success' | 'error' | 'info';
+    message: string;
+  };
+}
+
 export const SignIn = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notification, setNotification] = useState<{ type: string; message: string } | null>(null);
+
+  // Check for notifications from other pages (like password reset success)
+  useEffect(() => {
+    const state = location.state as LocationState;
+    if (state?.notification) {
+      setNotification(state.notification);
+      
+      // Clear the notification after 5 seconds
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -18,6 +44,15 @@ export const SignIn = () => {
     e.preventDefault();
     // Handle sign in logic here
     console.log("Sign in with:", { email, password });
+    
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      // Redirect to home page or dashboard
+      navigate("/");
+    }, 1500);
   };
 
   const handleGoogleSignIn = () => {
@@ -60,6 +95,21 @@ export const SignIn = () => {
 
         {/* Sign in header */}
         <h1 className="text-2xl font-semibold text-center mb-8">Sign in</h1>
+
+        {/* Notification */}
+        {notification && (
+          <div 
+            className={`mb-6 p-4 rounded-md ${
+              notification.type === 'success' 
+                ? 'bg-green-50 text-green-700' 
+                : notification.type === 'error'
+                ? 'bg-red-50 text-red-700'
+                : 'bg-blue-50 text-blue-700'
+            }`}
+          >
+            <p className="text-center">{notification.message}</p>
+          </div>
+        )}
 
         {/* Sign in form */}
         <form onSubmit={handleSignIn} className="space-y-6 w-full">
@@ -109,9 +159,10 @@ export const SignIn = () => {
 
           <Button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-[#1A1D21] text-white rounded-full py-6"
           >
-            Sign in
+            {isSubmitting ? "Signing In..." : "Sign in"}
           </Button>
         </form>
 
