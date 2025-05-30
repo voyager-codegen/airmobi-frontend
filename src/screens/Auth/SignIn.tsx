@@ -227,6 +227,22 @@ export const SignIn = () => {
             </Link>
           </p>
         </div>
+        
+        {/* Demo links */}
+        <div className="mt-4 text-center text-sm text-gray-500">
+          <p className="mb-2">Demo pages:</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Link to="/otp-verification" className="text-blue-600 hover:underline">
+              OTP Verification
+            </Link>
+            <Link to="/email-verification" className="text-blue-600 hover:underline">
+              Email Verification
+            </Link>
+            <Link to="/reset-password" className="text-blue-600 hover:underline">
+              Reset Password
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
